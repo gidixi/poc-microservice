@@ -1,0 +1,29 @@
+syntax = "proto3";
+package company.poc.ordering.domain.v1;
+option csharp_namespace = "Company.Poc.Ordering.Domain.V1";
+import "contracts/domain/v1/common.proto";
+
+message OrderItem {
+  string sku = 1;
+  Quantity qty = 2;
+  Money unit_price = 3; // può essere 0 nel request iniziale (pricing lo valorizza)
+}
+
+message Order {
+  Uuid order_id = 1;
+  string customer_id = 2;
+  repeated OrderItem items = 3;
+}
+
+message PricedOrder {
+  Order order = 1;
+  Money subtotal = 2;
+  Money tax = 3;
+  Money total = 4;
+}
+
+message ReservationResult {
+  Order order = 1;
+  bool reserved = 2;
+  string reason = 3;
+}
