@@ -1,0 +1,19 @@
+syntax = "proto3";
+package dispatcher;
+import "common.proto";
+
+service Dispatcher {
+  rpc SubmitOrder(SubmitOrderRequest) returns (SubmitOrderResponse);
+  rpc GetStatus(GetStatusRequest) returns (stream JobStatus); // server-stream
+}
+
+message SubmitOrderRequest { common.Order order = 1; }
+message SubmitOrderResponse { common.Uuid jobId = 1; }
+
+message GetStatusRequest { common.Uuid jobId = 1; }
+enum JobState { PENDING=0; PRICED=1; RESERVED=2; PERSISTED=3; FAILED=4; }
+message JobStatus {
+  common.Uuid jobId = 1;
+  JobState state = 2;
+  string message = 3;
+}

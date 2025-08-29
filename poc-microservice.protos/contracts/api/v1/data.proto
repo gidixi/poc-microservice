@@ -1,0 +1,9 @@
+syntax = "proto3";
+package data;
+import "common.proto";
+
+service Data {
+  rpc SaveOrder(common.PricedOrder) returns (PersistAck);
+}
+
+message PersistAck { bool ok = 1; string error = 2; }

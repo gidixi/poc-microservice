@@ -1,0 +1,17 @@
+syntax = "proto3";
+package logging;
+
+service Logging {
+  rpc Write(LogEntry) returns (WriteAck);
+  rpc Subscribe(LogFilter) returns (stream LogEntry);
+}
+
+message LogEntry {
+  string source = 1;
+  string level = 2;   // INFO/WARN/ERROR
+  string message = 3;
+  string correlationId = 4; // jobId
+  int64 unixTsMs = 5;
+}
+message WriteAck { bool ok = 1; }
+message LogFilter { string correlationId = 1; }
