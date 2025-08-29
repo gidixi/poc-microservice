@@ -1,7 +1,0 @@
-syntax = "proto3";
-package inventory;
-import "common.proto";
-
-service Inventory {
-  rpc Reserve(common.PricedOrder) returns (common.ReservationResult);
-}

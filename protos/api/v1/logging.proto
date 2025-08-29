@@ -1,0 +1,18 @@
+syntax = "proto3";
+package company.poc.ordering.api.v1;
+option csharp_namespace = "Company.Poc.Ordering.Api.V1";
+
+service Logging {
+  rpc Write(LogEntry) returns (WriteAck);
+  rpc Subscribe(LogFilter) returns (stream LogEntry);
+}
+
+message LogEntry {
+  string source = 1;
+  string level = 2;   // INFO/WARN/ERROR
+  string message = 3;
+  string correlation_id = 4; // jobId
+  int64 unix_ts_ms = 5;
+}
+message WriteAck { bool ok = 1; }
+message LogFilter { string correlation_id = 1; }

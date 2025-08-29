@@ -1,0 +1,24 @@
+syntax = "proto3";
+package company.poc.ordering.api.v1;
+option csharp_namespace = "Company.Poc.Ordering.Api.V1";
+import "protos/domain/v1/order.proto";
+import "protos/domain/v1/common.proto";
+
+service Dispatcher {
+  rpc SubmitOrder(SubmitOrderRequest) returns (SubmitOrderResponse);
+  rpc GetStatus(GetStatusRequest) returns (stream JobStatus);
+}
+
+message SubmitOrderRequest {
+  company.poc.ordering.domain.v1.Order order = 1;
+  string client_id = 2; // meta solo di trasporto
+}
+message SubmitOrderResponse { company.poc.ordering.domain.v1.Uuid job_id = 1; }
+
+message GetStatusRequest { company.poc.ordering.domain.v1.Uuid job_id = 1; }
+enum JobState { JOB_STATE_PENDING=0; JOB_STATE_PRICED=1; JOB_STATE_RESERVED=2; JOB_STATE_PERSISTED=3; JOB_STATE_FAILED=4; }
+message JobStatus {
+  company.poc.ordering.domain.v1.Uuid job_id = 1;
+  JobState state = 2;
+  string message = 3;
+}

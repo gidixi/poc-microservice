@@ -1,0 +1,8 @@
+syntax = "proto3";
+package company.poc.ordering.api.v1;
+option csharp_namespace = "Company.Poc.Ordering.Api.V1";
+import "protos/domain/v1/order.proto";
+
+service Inventory {
+  rpc Reserve(company.poc.ordering.domain.v1.Order) returns (company.poc.ordering.domain.v1.ReservationResult);
+}
