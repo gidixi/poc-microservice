@@ -1,0 +1,7 @@
+syntax = "proto3";
+package company.poc.ordering.domain.v1;
+option csharp_namespace = "Company.Poc.Ordering.Domain.V1";
+
+message Uuid { string value = 1; }
+message Money { double amount = 1; string currency = 2; }
+message Quantity { int32 value = 1; }

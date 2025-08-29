@@ -1,7 +1,0 @@
-syntax = "proto3";
-package pricing;
-import "common.proto";
-
-service Pricing {
-  rpc Calculate(common.Order) returns (common.PricedOrder);
-}
