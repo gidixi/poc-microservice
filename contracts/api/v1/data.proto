@@ -1,0 +1,8 @@
+syntax = "proto3";
+package company.poc.ordering.api.v1;
+option csharp_namespace = "Company.Poc.Ordering.Api.V1";
+import "contracts/domain/v1/order.proto";
+
+service Data {
+  rpc SaveOrder(company.poc.ordering.domain.v1.PricedOrder) returns (company.poc.ordering.domain.v1.Uuid);
+}
