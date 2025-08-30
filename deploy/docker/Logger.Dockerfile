@@ -2,7 +2,10 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 COPY . .
 
-RUN dotnet publish /src/Services/Logger/Logger.Api/Logger.Api.csproj -c Release -o /app/publish
+# The repository structure nests application code under a top-level `src` directory.
+# After copying the repository into `/src`, project files live at `/src/src/...`.
+# Adjust the publish path accordingly so `dotnet` can locate the project file.
+RUN dotnet publish src/Services/Logger/Logger.Api/Logger.Api.csproj -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app
