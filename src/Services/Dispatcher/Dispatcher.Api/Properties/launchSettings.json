@@ -4,7 +4,11 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "PRICING_URL": "https://localhost:6001",
+        "INVENTORY_URL": "https://localhost:6002",
+        "DATA_URL": "https://localhost:6003",
+        "LOG_URL": "https://localhost:6004"
       },
       "applicationUrl": "https://localhost:61414;http://localhost:61415"
     }
