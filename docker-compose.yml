@@ -49,17 +49,14 @@ services:
     ports:
       - "5000:8080"
   grpcwebproxy:
-    image: scarmuega/grpcwebproxy:latest
+    build:
+      context: .
+      dockerfile: deploy/docker/GrpcProxy.Dockerfile
     container_name: grpcwebproxy
     depends_on:
       - dispatcher
     ports:
       - "8080:8080"
-    command: >
-      --backend_addr=dispatcher:8080
-      --run_http_server=true
-      --run_tls_server=false
-      --allow_all_origins
     environment:
       GRPCWEB_ADDRESS: 0.0.0.0:8080
       BACKEND_ADDR: dispatcher:8080
