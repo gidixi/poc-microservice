@@ -1,0 +1,17 @@
+{
+  "name": "poc-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "vue": "^3.4.21",
+    "protobufjs": "^7.2.4"
+  },
+  "devDependencies": {
+    "vite": "^4.5.1",
+    "@vitejs/plugin-vue": "^4.5.2"
+  }
+}

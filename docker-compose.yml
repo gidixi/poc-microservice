@@ -49,17 +49,26 @@ services:
       LOG_URL: http://logger:8080
     ports:
       - "5000:8080"
-  grpcweb:
-    image: quay.io/grpcweb/grpcwebproxy:v0.15.0
-    container_name: grpcweb
+  grpcwebproxy:
+    image: improbable/grpc-web:latest
+    container_name: grpcwebproxy
     depends_on:
       - dispatcher
-    command:
-      - --backend_addr=dispatcher:8080
-      - --run_tls_server=false
-      - --allow_all_origins
     ports:
-      - "5005:8080"
+      - "8080:8080"
+    environment:
+      GRPCWEB_ADDRESS: 0.0.0.0:8080
+      BACKEND_ADDR: dispatcher:8080
+  frontend:
+    build:
+      context: .
+      dockerfile: deploy/docker/Frontend.Dockerfile
+    container_name: frontend
+    depends_on:
+      - grpcwebproxy
+    ports:
+      - "8081:80"
+
 volumes:
   data:
   logs:
