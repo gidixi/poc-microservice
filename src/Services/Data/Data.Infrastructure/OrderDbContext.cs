@@ -1,24 +1,30 @@
 using Microsoft.EntityFrameworkCore;
+using Poc.Micro.Ordering.Domain.Orders;
 
 namespace Poc.Micro.Data.Infrastructure;
 
 public class OrderDbContext : DbContext
 {
+    public OrderDbContext(DbContextOptions<OrderDbContext> options) : base(options) { }
 
-  public OrderDbContext(DbContextOptions<OrderDbContext> options) : base(options) { }
+    public DbSet<Order> Orders => Set<Order>();
+    public DbSet<OrderItem> OrderItems => Set<OrderItem>();
 
-  public DbSet<OrderEntity> Orders => Set<OrderEntity>();
-  public DbSet<OrderItemEntity> Items => Set<OrderItemEntity>();
+    protected override void OnModelCreating(ModelBuilder b)
+    {
+        b.Entity<Order>(cfg =>
+        {
+            cfg.HasKey(x => x.OrderId);
+            cfg.Property(x => x.CustomerId).IsRequired();
+            cfg.Property(x => x.Currency).IsRequired();
+            cfg.HasMany(x => x.Items).WithOne().OnDelete(DeleteBehavior.Cascade);
+            cfg.HasIndex(x => x.OrderId).IsUnique();
+        });
 
-  protected override void OnModelCreating(ModelBuilder modelBuilder)
-  {
-    modelBuilder.Entity<OrderEntity>()
-        .HasMany(o => o.Items)
-        .WithOne()
-        .HasForeignKey(i => i.OrderId);
-    modelBuilder.Entity<OrderEntity>()
-        .HasKey(o => o.OrderId);
-
-  }
-
+        b.Entity<OrderItem>(cfg =>
+        {
+            cfg.HasKey(x => x.Id);
+            cfg.Property(x => x.Sku).IsRequired();
+        });
+    }
 }
