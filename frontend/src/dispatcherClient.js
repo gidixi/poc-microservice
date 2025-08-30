@@ -1,6 +1,15 @@
 import protobuf from 'protobufjs';
 
-const rootPromise = protobuf.load('/contracts/api/v1/dispatcher.proto');
+// Ensure protobuf.js resolves contract imports from the repository root
+const root = new protobuf.Root();
+root.resolvePath = (origin, target) => {
+  if (target.startsWith('contracts/')) {
+    return `/${target}`;
+  }
+  return protobuf.util.path.resolve(origin, target);
+};
+
+const rootPromise = root.load('/contracts/api/v1/dispatcher.proto');
 
 function frameRequest(buf) {
   const out = new Uint8Array(5 + buf.length);
