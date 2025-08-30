@@ -1,8 +1,8 @@
+using System;
+using System.Threading.Tasks;
 using Grpc.Core;
 using Poc.Micro.Ordering.Api.V1;
 using Poc.Micro.Ordering.Domain.V1;
-using System;
-using System.Threading.Tasks;
 
 namespace Poc.Micro.Dispatcher.Api;
 
@@ -10,19 +10,53 @@ using ApiDispatcher = Poc.Micro.Ordering.Api.V1.Dispatcher;
 
 public class DispatcherService : ApiDispatcher.DispatcherBase
 {
-    public override Task<SubmitOrderResponse> SubmitOrder(SubmitOrderRequest request, ServerCallContext context)
+    private readonly JobStore _jobs;
+    private readonly Logging.LoggingClient _log;
+
+    public DispatcherService(JobStore jobs, Logging.LoggingClient log)
     {
-        var jobId = new Uuid { Value = Guid.NewGuid().ToString() };
-        return Task.FromResult(new SubmitOrderResponse { JobId = jobId });
+        _jobs = jobs;
+        _log = log;
+    }
+
+    public override async Task<SubmitOrderResponse> SubmitOrder(SubmitOrderRequest request, ServerCallContext context)
+    {
+        var jobId = CreateV7();
+        _jobs.SaveOrder(jobId, request.Order);
+        _jobs.Upsert(new JobInfo(jobId, JobState.Pending, "queued"));
+        await _jobs.EnqueueAsync(jobId);
+
+        await _log.WriteAsync(new LogEntry
+        {
+            Source = "dispatcher",
+            Level = "INFO",
+            CorrelationId = jobId.ToString(),
+            Message = "Order received",
+            UnixTsMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
+        });
+
+        return new SubmitOrderResponse { JobId = new Uuid { Value = jobId.ToString() } };
     }
 
     public override async Task GetStatus(GetStatusRequest request, IServerStreamWriter<JobStatus> responseStream, ServerCallContext context)
     {
-        await responseStream.WriteAsync(new JobStatus
+        var id = Guid.Parse(request.JobId.Value);
+        while (!context.CancellationToken.IsCancellationRequested)
         {
-            JobId = request.JobId,
-            State = JobState.Pending,
-            Message = "Pending"
-        });
+            var j = _jobs.Get(id);
+            if (j is not null)
+            {
+                await responseStream.WriteAsync(new JobStatus
+                {
+                    JobId = request.JobId,
+                    State = j.State,
+                    Message = j.Message
+                });
+                if (j.State is JobState.Persisted or JobState.Failed) break;
+            }
+            await Task.Delay(300, context.CancellationToken);
+        }
     }
+
+    private static Guid CreateV7() => Guid.CreateVersion7(DateTimeOffset.UtcNow);
 }
