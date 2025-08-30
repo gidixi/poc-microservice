@@ -1,8 +1,8 @@
-using System;
-using System.Threading.Tasks;
 using Grpc.Core;
 using Poc.Micro.Ordering.Api.V1;
 using Poc.Micro.Ordering.Domain.V1;
+using System;
+using System.Threading.Tasks;
 
 namespace Poc.Micro.Dispatcher.Api;
 
