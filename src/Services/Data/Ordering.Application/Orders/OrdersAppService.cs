@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Poc.Micro.Ordering.Domain.Abstractions;
+using Poc.Micro.Persistence.Abstractions;
 using Poc.Micro.Ordering.Domain.Orders;
 using Poc.Micro.Ordering.Domain.V1;
 using DomainOrder = Poc.Micro.Ordering.Domain.Orders.Order;
@@ -12,10 +12,10 @@ namespace Poc.Micro.Ordering.Application.Orders;
 
 public sealed class OrdersAppService : IOrdersAppService
 {
-    private readonly IOrderRepository _orders;
+    private readonly IRepository<DomainOrder> _orders;
     private readonly IUnitOfWork _uow;
 
-    public OrdersAppService(IOrderRepository orders, IUnitOfWork uow)
+    public OrdersAppService(IRepository<DomainOrder> orders, IUnitOfWork uow)
     {
         _orders = orders;
         _uow = uow;
@@ -25,8 +25,8 @@ public sealed class OrdersAppService : IOrdersAppService
     {
         var orderId = Guid.Parse(dto.Order.OrderId.Value);
 
-        var existing = await _orders.GetByOrderIdAsync(orderId, ct);
-        if (existing is not null)
+        var exists = await _orders.AnyAsync(o => o.OrderId == orderId, ct);
+        if (exists)
             return new Uuid { Value = orderId.ToString() };
 
         var order = DomainOrder.Create(

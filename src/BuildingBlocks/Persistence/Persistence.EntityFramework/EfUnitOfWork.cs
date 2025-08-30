@@ -1,15 +1,15 @@
 using Microsoft.EntityFrameworkCore;
-using Poc.Micro.Ordering.Domain.Abstractions;
+using Poc.Micro.Persistence.Abstractions;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Poc.Micro.Data.Infrastructure;
+namespace Poc.Micro.Persistence.EntityFramework;
 
 public class EfUnitOfWork : IUnitOfWork
 {
-    private readonly OrderDbContext _db;
-    public EfUnitOfWork(OrderDbContext db) => _db = db;
+    private readonly DbContext _db;
+    public EfUnitOfWork(DbContext db) => _db = db;
 
     public Task<int> SaveChangesAsync(CancellationToken ct = default)
         => _db.SaveChangesAsync(ct);

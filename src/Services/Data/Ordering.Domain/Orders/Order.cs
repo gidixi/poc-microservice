@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Poc.Micro.Ordering.Domain.Abstractions;
+using Poc.Micro.Persistence.Abstractions;
 
 namespace Poc.Micro.Ordering.Domain.Orders;
 

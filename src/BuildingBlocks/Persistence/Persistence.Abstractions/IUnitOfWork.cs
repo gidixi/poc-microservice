@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Poc.Micro.Ordering.Domain.Abstractions;
+namespace Poc.Micro.Persistence.Abstractions;
 
 public interface IUnitOfWork
 {

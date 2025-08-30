@@ -1,10 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 
-namespace Poc.Micro.Ordering.Domain.Abstractions;
+namespace Poc.Micro.Persistence.Abstractions;
 
 public interface IRepository<T> where T : class, IAggregateRoot
 {

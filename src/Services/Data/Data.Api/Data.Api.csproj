@@ -6,6 +6,7 @@
   <ItemGroup>
     <ProjectReference Include="../../../BuildingBlocks/Contracts/Contracts.Api/Contracts.Api.csproj" />
     <ProjectReference Include="../../../BuildingBlocks/Contracts/Contracts.Domain/Contracts.Domain.csproj" />
+    <ProjectReference Include="../../../BuildingBlocks/Persistence/Persistence.EntityFramework/Persistence.EntityFramework.csproj" />
     <ProjectReference Include="../Data.Infrastructure/Data.Infrastructure.csproj" />
     <ProjectReference Include="../Ordering.Application/Ordering.Application.csproj" />
   </ItemGroup>

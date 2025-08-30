@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Poc.Micro.Ordering.Domain.Abstractions;
+using Poc.Micro.Persistence.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,14 +7,14 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Poc.Micro.Data.Infrastructure;
+namespace Poc.Micro.Persistence.EntityFramework;
 
 public class Repository<T> : IRepository<T> where T : class, IAggregateRoot
 {
-    protected readonly OrderDbContext _db;
+    protected readonly DbContext _db;
     protected readonly DbSet<T> _set;
 
-    public Repository(OrderDbContext db)
+    public Repository(DbContext db)
     {
         _db = db;
         _set = db.Set<T>();
