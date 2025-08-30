@@ -1,6 +1,6 @@
 syntax = "proto3";
-package company.poc.ordering.domain.v1;
-option csharp_namespace = "Company.Poc.Ordering.Domain.V1";
+package poc.micro.ordering.domain.v1;
+option csharp_namespace = "Poc.Micro.Ordering.Domain.V1";
 import "contracts/domain/v1/common.proto";
 
 message OrderItem {
