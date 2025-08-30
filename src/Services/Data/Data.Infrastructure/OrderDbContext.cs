@@ -4,6 +4,7 @@ namespace Poc.Micro.Data.Infrastructure;
 
 public class OrderDbContext : DbContext
 {
+
   public OrderDbContext(DbContextOptions<OrderDbContext> options) : base(options) { }
 
   public DbSet<OrderEntity> Orders => Set<OrderEntity>();
@@ -19,4 +20,5 @@ public class OrderDbContext : DbContext
         .HasKey(o => o.OrderId);
 
   }
+
 }
