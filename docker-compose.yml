@@ -49,6 +49,17 @@ services:
       LOG_URL: http://logger:8080
     ports:
       - "5000:8080"
+  grpcweb:
+    image: quay.io/grpcweb/grpcwebproxy:v0.15.0
+    container_name: grpcweb
+    depends_on:
+      - dispatcher
+    command:
+      - --backend_addr=dispatcher:8080
+      - --run_tls_server=false
+      - --allow_all_origins
+    ports:
+      - "5005:8080"
 volumes:
   data:
   logs:
