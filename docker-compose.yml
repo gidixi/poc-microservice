@@ -49,6 +49,25 @@ services:
       LOG_URL: http://logger:8080
     ports:
       - "5000:8080"
+  grpcwebproxy:
+    image: improbable/grpc-web:latest
+    container_name: grpcwebproxy
+    depends_on:
+      - dispatcher
+    ports:
+      - "8080:8080"
+    environment:
+      GRPCWEB_ADDRESS: 0.0.0.0:8080
+      BACKEND_ADDR: dispatcher:8080
+  frontend:
+    build:
+      context: .
+      dockerfile: deploy/docker/Frontend.Dockerfile
+    container_name: frontend
+    depends_on:
+      - grpcwebproxy
+    ports:
+      - "8081:80"
 volumes:
   data:
   logs:

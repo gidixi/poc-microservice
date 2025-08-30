@@ -4,9 +4,19 @@ This repository contains a proof-of-concept microservice system. The solution fi
 
 ## Frontend
 
-A minimal Vue 3 client lives under `frontend`. It uses gRPC-Web to submit orders to the dispatcher via a proxy on `localhost:8080` and relies on `protobufjs` to load the protobuf contracts at runtime.
+A minimal Vue 3 client lives under `frontend`. It uses gRPC-Web to submit orders to the dispatcher through a proxy.
 
-### Run the frontend
+### Run with Docker Compose
+
+The provided `docker-compose.yml` builds the frontend and a gRPC-Web proxy. After running:
+
+```bash
+docker-compose up --build
+```
+
+the application is available at <http://localhost:8081> and the gRPC-Web proxy listens on port `8080`.
+
+### Run locally
 
 ```bash
 cd frontend
@@ -14,4 +24,4 @@ npm install
 npm run dev
 ```
 
-Ensure the microservices are running via `docker-compose` and that a gRPC-Web proxy (e.g. `grpcwebproxy`) is forwarding requests to the dispatcher on port 8080.
+When running locally, ensure a gRPC-Web proxy (e.g. `grpcwebproxy`) forwards requests to the dispatcher on port `8080`.
