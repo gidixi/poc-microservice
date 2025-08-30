@@ -4,16 +4,19 @@ namespace Poc.Micro.Data.Infrastructure;
 
 public class OrderDbContext : DbContext
 {
-    public OrderDbContext(DbContextOptions<OrderDbContext> options) : base(options) { }
+  public OrderDbContext(DbContextOptions<OrderDbContext> options) : base(options) { }
 
-    public DbSet<OrderEntity> Orders => Set<OrderEntity>();
-    public DbSet<OrderItemEntity> Items => Set<OrderItemEntity>();
+  public DbSet<OrderEntity> Orders => Set<OrderEntity>();
+  public DbSet<OrderItemEntity> Items => Set<OrderItemEntity>();
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<OrderEntity>()
-            .HasMany(o => o.Items)
-            .WithOne()
-            .HasForeignKey(i => i.OrderId);
-    }
+  protected override void OnModelCreating(ModelBuilder modelBuilder)
+  {
+    modelBuilder.Entity<OrderEntity>()
+        .HasMany(o => o.Items)
+        .WithOne()
+        .HasForeignKey(i => i.OrderId);
+    modelBuilder.Entity<OrderEntity>()
+        .HasKey(o => o.OrderId);
+
+  }
 }
