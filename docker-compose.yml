@@ -68,6 +68,7 @@ services:
       - grpcwebproxy
     ports:
       - "8081:80"
+
 volumes:
   data:
   logs:

@@ -2,6 +2,7 @@
 
 This repository contains a proof-of-concept microservice system. The solution file is `poc-micro.sln` and the source code follows the structured layout under `src`, `tests`, `deploy`, `scripts`, `config`, and versioned protobuf contracts in `contracts`.
 
+
 ## Frontend
 
 A minimal Vue 3 client lives under `frontend`. It uses gRPC-Web to submit orders to the dispatcher through a proxy.
@@ -25,3 +26,4 @@ npm run dev
 ```
 
 When running locally, ensure a gRPC-Web proxy (e.g. `grpcwebproxy`) forwards requests to the dispatcher on port `8080`.
+
