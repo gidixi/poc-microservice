@@ -5,8 +5,6 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../Ordering.Domain/Ordering.Domain.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.*" />
+    <ProjectReference Include="../../../BuildingBlocks/Contracts/Contracts.Domain/Contracts.Domain.csproj" />
   </ItemGroup>
 </Project>
