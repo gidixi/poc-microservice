@@ -5,6 +5,7 @@
   <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.*" />
     <PackageReference Include="Grpc.Tools" Version="2.*" PrivateAssets="All" />
+    <PackageReference Include="Grpc.Core.Api" Version="2.*" />
   </ItemGroup>
   <ItemGroup>
     <Protobuf Include="../../../../contracts/api/v1/dispatcher.proto" ProtoRoot="../../../../" GrpcServices="Client,Server" />
