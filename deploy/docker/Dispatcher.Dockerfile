@@ -3,7 +3,7 @@ WORKDIR /src
 COPY . .
 
 # Handle the nested `src` directory structure.
-RUN dotnet publish src/Services/Dispatcher/Dispatcher.Api/Dispatcher.Api.csproj -c Release -o /app/publish
+RUN dotnet publish src/Services/Dispatcher/Dispatcher.Api/Dispatcher.Api.csproj -c Debug -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app

@@ -1,8 +1,8 @@
 syntax = "proto3";
 package poc.micro.ordering.api.v1;
 option csharp_namespace = "Poc.Micro.Ordering.Api.V1";
-import "../domain/v1/order.proto";
-import "../domain/v1/common.proto";
+import "../../domain/v1/order.proto";
+import "../../domain/v1/common.proto";
 
 service Dispatcher {
   rpc SubmitOrder(SubmitOrderRequest) returns (SubmitOrderResponse);

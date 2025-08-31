@@ -3,7 +3,7 @@ WORKDIR /src
 COPY . .
 
 # Adjust for nested repository layout (`/src/src/...`).
-RUN dotnet publish src/Services/Pricing/Pricing.Api/Pricing.Api.csproj -c Release -o /app/publish
+RUN dotnet publish src/Services/Pricing/Pricing.Api/Pricing.Api.csproj -c Debug -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app

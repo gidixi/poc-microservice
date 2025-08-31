@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Poc.Micro.Data.Api;
 using Poc.Micro.Data.Infrastructure;
 using Poc.Micro.Ordering.Application.Orders;
@@ -11,9 +13,20 @@ using Poc.Micro.Persistence.EntityFramework;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.ConfigureKestrel(options =>
+{
+  options.ListenAnyIP(8080, listenOptions =>
+  {
+    listenOptions.Protocols = HttpProtocols.Http2; // IMPORTANTE!
+  });
+});
+
 builder.Services.AddGrpc();
 builder.Services.AddDbContext<OrderDbContext>(o => o.UseSqlite("Data Source=/data/orders.db"));
 System.IO.Directory.CreateDirectory("/data");
+
+// DbContext binding
+builder.Services.AddScoped<DbContext>(sp => sp.GetRequiredService<OrderDbContext>());
 
 // Domain/Application bindings
 builder.Services.AddScoped<IUnitOfWork, EfUnitOfWork>();
