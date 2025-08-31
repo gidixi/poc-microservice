@@ -43,11 +43,10 @@ public sealed class OrdersAppService : IOrdersAppService
             )).ToList()
         );
 
-        await _orders.AddAsync(order, ct);
-
-        await _uow.ExecuteInTransactionAsync(async _ =>
+        await _uow.ExecuteInTransactionAsync(async ctInner =>
         {
-            await _uow.SaveChangesAsync(ct);
+            await _orders.AddAsync(order, ctInner);
+            await _uow.SaveChangesAsync(ctInner);
         }, ct);
 
         return new Uuid { Value = orderId.ToString() };
