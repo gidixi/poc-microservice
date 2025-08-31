@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Poc.Micro.Persistence.Abstractions;
-using Poc.Micro.Ordering.Domain.Orders;
 using Poc.Micro.Ordering.Domain.V1;
 using DomainOrder = Poc.Micro.Ordering.Domain.Orders.Order;
 using DomainOrderItem = Poc.Micro.Ordering.Domain.Orders.OrderItem;
