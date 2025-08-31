@@ -17,4 +17,12 @@ public class DataService : Poc.Micro.Ordering.Api.V1.Data.DataBase
 
     public override Task<Uuid> SaveOrder(PricedOrder request, ServerCallContext context)
         => _app.SavePricedOrderAsync(request, context.CancellationToken);
+
+    public override async Task<ListOrdersResponse> ListOrders(ListOrdersRequest request, ServerCallContext context)
+    {
+        var orders = await _app.ListOrdersAsync(context.CancellationToken);
+        var resp = new ListOrdersResponse();
+        resp.Orders.AddRange(orders);
+        return resp;
+    }
 }

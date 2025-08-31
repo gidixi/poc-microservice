@@ -410,6 +410,9 @@ FodyWeavers.xsd
 # Built Visual Studio Code Extensions
 *.vsix
 
+# Frontend build output
+frontend/dist/
+
 # Windows Installer files from build outputs
 *.cab
 *.msi

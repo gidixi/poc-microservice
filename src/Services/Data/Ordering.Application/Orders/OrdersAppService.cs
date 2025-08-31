@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -50,5 +51,27 @@ public sealed class OrdersAppService : IOrdersAppService
         }, ct);
 
         return new Uuid { Value = orderId.ToString() };
+    }
+
+    public async Task<List<PricedOrder>> ListOrdersAsync(CancellationToken ct)
+    {
+        var entities = await _orders.ListAsync(ct: ct);
+        return entities.Select(o => new PricedOrder
+        {
+            Order = new Order
+            {
+                OrderId = new Uuid { Value = o.OrderId.ToString() },
+                CustomerId = o.CustomerId,
+                Items = { o.Items.Select(i => new OrderItem
+                    {
+                        Sku = i.Sku,
+                        Qty = new Quantity { Value = i.Quantity },
+                        UnitPrice = new Money { Currency = o.Currency, Amount = (double)i.UnitPrice }
+                    }) }
+            },
+            Subtotal = new Money { Currency = o.Currency, Amount = (double)o.Subtotal },
+            Tax = new Money { Currency = o.Currency, Amount = (double)o.Tax },
+            Total = new Money { Currency = o.Currency, Amount = (double)o.Total }
+        }).ToList();
     }
 }
