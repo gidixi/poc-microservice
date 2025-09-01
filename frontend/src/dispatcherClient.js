@@ -6,6 +6,9 @@ root.resolvePath = (origin, target) => {
   if (target.startsWith('contracts/')) {
     return `/${target}`;
   }
+  if (target.startsWith('google/protobuf/')) {
+    return target;
+  }
   return protobuf.util.path.resolve(origin, target);
 };
 
