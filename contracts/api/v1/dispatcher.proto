@@ -3,10 +3,13 @@ package poc.micro.ordering.api.v1;
 option csharp_namespace = "Poc.Micro.Ordering.Api.V1";
 import "contracts/domain/v1/order.proto";
 import "contracts/domain/v1/common.proto";
+import "contracts/api/v1/data.proto";
+import "google/protobuf/empty.proto";
 
 service Dispatcher {
   rpc SubmitOrder(SubmitOrderRequest) returns (SubmitOrderResponse);
   rpc GetStatus(GetStatusRequest) returns (stream JobStatus);
+  rpc ListOrders(google.protobuf.Empty) returns (ListOrdersResponse);
 }
 
 message SubmitOrderRequest {

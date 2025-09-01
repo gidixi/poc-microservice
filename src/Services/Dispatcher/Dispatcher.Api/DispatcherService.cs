@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Grpc.Core;
+using Google.Protobuf.WellKnownTypes;
 using Poc.Micro.Ordering.Api.V1;
 using Poc.Micro.Ordering.Domain.V1;
 
@@ -12,11 +13,13 @@ public class DispatcherService : ApiDispatcher.DispatcherBase
 {
     private readonly JobStore _jobs;
     private readonly Logging.LoggingClient _log;
+    private readonly Data.DataClient _data;
 
-    public DispatcherService(JobStore jobs, Logging.LoggingClient log)
+    public DispatcherService(JobStore jobs, Logging.LoggingClient log, Data.DataClient data)
     {
         _jobs = jobs;
         _log = log;
+        _data = data;
     }
 
     public override async Task<SubmitOrderResponse> SubmitOrder(SubmitOrderRequest request, ServerCallContext context)
@@ -57,6 +60,9 @@ public class DispatcherService : ApiDispatcher.DispatcherBase
             await Task.Delay(300, context.CancellationToken);
         }
     }
+
+    public override Task<ListOrdersResponse> ListOrders(Empty request, ServerCallContext context)
+        => _data.ListOrdersAsync(request, cancellationToken: context.CancellationToken);
 
     private static Guid CreateV7() => Guid.CreateVersion7(DateTimeOffset.UtcNow);
 }

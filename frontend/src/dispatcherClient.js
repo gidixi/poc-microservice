@@ -46,3 +46,22 @@ export async function submitOrder(order) {
   const buffer = new Uint8Array(await res.arrayBuffer());
   return SubmitOrderResponse.decode(parseResponse(buffer));
 }
+
+export async function fetchOrders() {
+  const root = await rootPromise;
+  const Empty = root.lookupType('google.protobuf.Empty');
+  const ListOrdersResponse = root.lookupType('poc.micro.ordering.api.v1.ListOrdersResponse');
+  const body = frameRequest(Empty.encode(Empty.create()).finish());
+
+  const res = await fetch('http://localhost:8080/poc.micro.ordering.api.v1.Dispatcher/ListOrders', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/grpc-web+proto',
+      'X-Grpc-Web': '1'
+    },
+    body
+  });
+
+  const buffer = new Uint8Array(await res.arrayBuffer());
+  return ListOrdersResponse.decode(parseResponse(buffer));
+}
