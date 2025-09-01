@@ -1,9 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Poc.Micro.Persistence.Abstractions;
-using Poc.Micro.Ordering.Domain.Orders;
 using Poc.Micro.Ordering.Domain.V1;
 using DomainOrder = Poc.Micro.Ordering.Domain.Orders.Order;
 using DomainOrderItem = Poc.Micro.Ordering.Domain.Orders.OrderItem;
@@ -50,5 +50,28 @@ public sealed class OrdersAppService : IOrdersAppService
         }, ct);
 
         return new Uuid { Value = orderId.ToString() };
+    }
+
+    public async Task<List<PricedOrder>> ListPricedOrdersAsync(CancellationToken ct)
+    {
+        var list = await _orders.ListAsync(ct: ct);
+        return list.Select(o => new PricedOrder
+        {
+            Order = new Order
+            {
+                OrderId = new Uuid { Value = o.OrderId.ToString() },
+                CustomerId = o.CustomerId,
+                Items = { o.Items.Select(i => new OrderItem
+                    {
+                        Sku = i.Sku,
+                        Qty = new Quantity { Value = i.Quantity },
+                        UnitPrice = new Money { Amount = (double)i.UnitPrice, Currency = o.Currency }
+                    })
+                }
+            },
+            Subtotal = new Money { Amount = (double)o.Subtotal, Currency = o.Currency },
+            Tax = new Money { Amount = (double)o.Tax, Currency = o.Currency },
+            Total = new Money { Amount = (double)o.Total, Currency = o.Currency }
+        }).ToList();
     }
 }

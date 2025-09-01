@@ -3,7 +3,13 @@ package poc.micro.ordering.api.v1;
 option csharp_namespace = "Poc.Micro.Ordering.Api.V1";
 import "contracts/domain/v1/order.proto";
 import "contracts/domain/v1/common.proto";
+import "google/protobuf/empty.proto";
 
 service Data {
   rpc SaveOrder(poc.micro.ordering.domain.v1.PricedOrder) returns (poc.micro.ordering.domain.v1.Uuid);
+  rpc ListOrders(google.protobuf.Empty) returns (ListOrdersResponse);
+}
+
+message ListOrdersResponse {
+  repeated poc.micro.ordering.domain.v1.PricedOrder orders = 1;
 }
