@@ -62,7 +62,7 @@ public class DispatcherService : ApiDispatcher.DispatcherBase
     }
 
     public override Task<ListOrdersResponse> ListOrders(Empty request, ServerCallContext context)
-        => _data.ListOrdersAsync(request, cancellationToken: context.CancellationToken);
+        => _data.ListOrdersAsync(request, cancellationToken: context.CancellationToken).ResponseAsync;
 
     private static Guid CreateV7() => Guid.CreateVersion7(DateTimeOffset.UtcNow);
 }
