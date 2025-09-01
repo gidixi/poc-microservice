@@ -7,7 +7,7 @@ root.resolvePath = (origin, target) => {
     return `/${target}`;
   }
   if (target.startsWith('google/protobuf/')) {
-    return target;
+    return `/${target}`;
   }
   return protobuf.util.path.resolve(origin, target);
 };
